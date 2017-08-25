@@ -1,5 +1,9 @@
 FROM <IMAGE-BASE>
 
+# Distribrewed specifics
+RUN addgroup -S distribrewed && adduser -S -G distribrewed distribrewed
+RUN apk add --no-cache su-exec
+
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
 

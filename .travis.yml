@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+language: bash
+script:
+  - ./create_dockerfiles.sh
+  - docker build -t distribrewed/base:x64 -f Dockerfile.x64
+  - docker build -t distribrewed/base:arm -f Dockerfile.arm
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+  - docker push distribrewed/base:x64
+  - docker push distribrewed/base:arm

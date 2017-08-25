@@ -11,7 +11,7 @@ jobs:
       - docker build -t distribrewed/base:x64 -f Dockerfile.x64 .
       - docker run -t distribrewed/base:x64 python --version
       - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-      - docker push distribrewed/base:arm
+      - docker push distribrewed/base:x64
     - stage: Build ARM image
       script:
       - ./create_dockerfiles.sh

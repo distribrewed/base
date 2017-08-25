@@ -5,7 +5,14 @@ language: bash
 
 jobs:
   include:
-    - stage: build ARM image
+    - stage: Build x64 image
+      script:
+      - ./create_dockerfiles.sh
+      - docker build -t distribrewed/base:x64 -f Dockerfile.x64 .
+      - docker run -t distribrewed/base:x64 python --version
+      - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+      - docker push distribrewed/base:arm
+    - stage: Build ARM image
       script:
       - ./create_dockerfiles.sh
       - docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -13,3 +20,6 @@ jobs:
       - docker run -t distribrewed/base:arm python --version
       - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
       - docker push distribrewed/base:arm
+    - stage: Test docker pull
+      - docker run -t distribrewed/base:arm python --version
+      - docker run -t distribrewed/base:x64 python --version

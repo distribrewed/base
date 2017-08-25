@@ -21,5 +21,6 @@ jobs:
       - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
       - docker push distribrewed/base:arm
     - stage: Test docker pull
+      script:
       - docker run -t distribrewed/base:arm python --version
       - docker run -t distribrewed/base:x64 python --version

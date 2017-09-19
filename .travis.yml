@@ -12,13 +12,13 @@ jobs:
     - stage: Build image
       env:
       - ARCH=x64
-      - BASE=amd64/python:3.6-alpine3.6
+      - BASE=alpine:3.6
       script:
       - ./travis_scripts/build_$ARCH.sh
     - stage: Build image
       env:
       - ARCH=arm
-      - BASE=arm32v6/python:3.6-alpine3.6
+      - BASE=multiarch/alpine:armhf-v3.6
       script:
       - ./travis_scripts/build_$ARCH.sh
     - stage: Trigger builds

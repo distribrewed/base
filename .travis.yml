@@ -10,13 +10,15 @@ branches:
 jobs:
   include:
     - stage: Build image
-      env: ARCH=x64
-      env: BASE=alpine:3.6
+      env:
+      - ARCH=x64
+      - BASE=alpine:3.6
       script:
       - ./travis_scripts/build_$ARCH.sh
     - stage: Build image
-      env: ARCH=arm
-      env: BASE=hypriot/rpi-alpine:3.6
+      env:
+      - ARCH=arm
+      - BASE=hypriot/rpi-alpine:3.6
       script:
       - ./travis_scripts/build_$ARCH.sh
     - stage: Trigger builds

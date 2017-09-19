@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 BASE_IMAGE=$(echo $BASE | sed 's/\//\\\//g')
 
 sed "s/<IMAGE-BASE>/$BASE_IMAGE/g" Dockerfile > Dockerfile.x64

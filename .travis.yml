@@ -3,25 +3,23 @@ services:
   - docker
 language: bash
 
+branches:
+  only:
+    - master
+
 jobs:
   include:
-    - stage: Build x64 image
+    - stage: Build image
+      env: ARCH=x64
+      env: BASE=alpine:3.6
       script:
-      - ./create_dockerfiles.sh
-      - docker build -t distribrewed/base:x64 -f Dockerfile.x64 .
-      - docker run -t distribrewed/base:x64 python --version
-      - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-      - docker push distribrewed/base:x64
-    - stage: Build ARM image
+      - ./travis_scripts/build_$ARCH.sh
+    - stage: Build image
+      env: ARCH=arm
+      env: BASE=hypriot/rpi-alpine:3.6
       script:
-      - ./create_dockerfiles.sh
-      - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - docker build -t distribrewed/base:arm -f Dockerfile.arm .
-      - docker run -t distribrewed/base:arm python --version
-      - docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-      - docker push distribrewed/base:arm
-    - stage: Test docker pull
+      - ./travis_scripts/build_$ARCH.sh
+    - stage: Trigger builds
+      env: REPO=distribrewed/core
       script:
-      - docker run -t distribrewed/base:x64 python --version
-      - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - docker run -t distribrewed/base:arm python --version
+      - ./travis_scripts/trigger_builds.sh
